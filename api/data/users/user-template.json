@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "name": "alperen",
+  "surname": "aslan",
+  "email": "alperen.aslan@gmail.com",
+  "createDate": 1706864751612,
+  "updateDate": 1706864751612,
+  "status": true,
+  "portfolios": [
+    {
+      "portfolioID": 1,
+      "funds": [
+        {
+          "fundKod": "IIH"
+        }
+      ]
+    }
+  ]
+}
