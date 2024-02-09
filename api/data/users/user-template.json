@@ -8,10 +8,26 @@
   "status": true,
   "portfolios": [
     {
-      "portfolioID": 1,
+      "id": "1",
+      "name": "sepet ismi",
       "funds": [
         {
-          "fundKod": "IIH"
+          "id": "1",
+          "kod": "DVT",
+          "ekleme-tarihi": 1706864751612,
+          "miktar": 1000
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "sepet ismi-2",
+      "funds": [
+        {
+          "id": "2",
+          "kod": "IPB",
+          "ekleme-tarihi": 1706864751612,
+          "miktar": 1000
         }
       ]
     }

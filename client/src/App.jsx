@@ -1,21 +1,19 @@
 import './App.css'
+import {Route, Routes} from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:4000'
+axios.defaults.baseURL = 'http://localhost:4000';
 
 function App() {
-  const testServer = (event) => {
-    event.preventDefault();
-    axios.get('/test');
-  }
-
   return (
-    <>
-      <h1 className='bg-red-500'>Fon Portföy</h1>
-      <form onSubmit={testServer}>
-        <button>test</button>
-      </form>
-    </>
+    <Routes>
+      <Route path='/' element={<HomePage />} />
+      <Route path='/login' element={<LoginPage />} />
+      <Route path='/signup' element={<SignupPage />} />
+    </Routes>
   )
 }
 

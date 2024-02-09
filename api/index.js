@@ -28,24 +28,41 @@ app.post('/register', async (req, res) => {
   }
 
   const json = JSON.stringify(user, null, 2);
-
   let fileName = `${userID}.json`;
   const status = fs.existsSync(fileName);
 
   if (!status) {
-    fs.promises.appendFile(`${usersPath}/${fileName}`, json);
+    await fs.promises.appendFile(`${usersPath}/${fileName}`, json);
   } else {
     const newID = uuidv4();
     fileName = `${newID}.json`;
-    fs.promises.appendFile(`${usersPath}/${fileName}`, json);
+    await fs.promises.appendFile(`${usersPath}/${fileName}`, json);
   }
 
+  return res.status(200).json('Registration Successful!');
 });
 
-app.post('/sign-in', (req, res) => {
+app.post('/sign-in', async (req, res) => {
   const {mail, password} = req.body;
-  
-  res.json({mail, password});
+
+  const fileNames = fs.readdirSync(usersPath, 'utf-8');
+
+  const findUser = fileNames.find(file => {
+    const userJason = fs.readFileSync(`${usersPath}/${file}`, 'utf-8');
+    const userData = JSON.parse(userJason)
+    return userData.email == mail;
+  })
+
+  if (!findUser) return res.status(422).json('User information is incorrect');
+
+  const userJason = fs.readFileSync(`${usersPath}/${findUser}`, 'utf-8');
+  const userData = JSON.parse(userJason)
+
+  if (userData.password == password) {
+    return res.status(200).json('Password Correct');
+  } else {
+    return res.status(422).json('Password Wrong');
+  }
 });
 
 
