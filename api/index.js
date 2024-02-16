@@ -4,6 +4,7 @@ const axios = require("axios");
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const usersPath = './data/users';
+const fundsPath = './data/funds';
 const app = express();
 
 app.use(express.json());
@@ -12,6 +13,20 @@ app.use(cors({
   origin: 'http://localhost:5173'
 }));
 
+const findUserFile = (userID) => {
+  const fileNames = fs.readdirSync(usersPath, 'utf-8');
+
+  const userFile = fileNames.find(file => {
+    const userJason = fs.readFileSync(`${usersPath}/${file}`, 'utf-8');
+    const userData = JSON.parse(userJason)
+    return userData.id == userID;
+  })
+
+  if (!userFile) return "";
+  return userFile;
+}
+
+// REGISTER
 app.post('/register', async (req, res) => {
   const userID = uuidv4();
 
@@ -42,6 +57,7 @@ app.post('/register', async (req, res) => {
   return res.status(200).json('Registration Successful!');
 });
 
+// LOGIN
 app.post('/sign-in', async (req, res) => {
   const {mail, password} = req.body;
 
@@ -65,6 +81,39 @@ app.post('/sign-in', async (req, res) => {
   }
 });
 
+// USER PORTFOLIOS (bu kısım daha sonra login sayfasından sonra cookie veya storage a kaydedilerek çekilebilir ekstra istek atmaya gerek yok)
+app.get('/portfolio-list/:userID', async(req, res) => {
+	const { userID } = req.params;
+  const userFile = findUserFile(userID)
+
+  if (!userFile) return res.status(422).json('Something got wrong!');
+
+  const userJason = fs.readFileSync(`${usersPath}/${userFile}`, 'utf-8');
+  const userData = JSON.parse(userJason)
+  return res.status(200).json(userData);
+})
+
+// ADD PORTFOLIO
+app.post("/add-portfolio", async (req, res) => {
+  const {userID, newPortfolio} = req.body;
+
+  const userFile = findUserFile(userID)
+  const userJason = fs.readFileSync(`${usersPath}/${userFile}`, 'utf-8');
+  const userData = JSON.parse(userJason)
+
+  userData.portfolios.push(newPortfolio)
+  const json = JSON.stringify(userData, null, 2);
+  fs.writeFileSync(`${usersPath}/${userFile}`, json)
+
+  return res.status(200).json(userData);
+})
+
+// FUND LIST
+app.get('/fund-list', async(req, res) => {
+  const fundsJson = fs.readFileSync(`${fundsPath}/funds.json`, 'utf-8');
+  const fundsData = JSON.parse(fundsJson)
+  return res.status(200).json(fundsData);
+})
 
 // TEFAS API
 app.post("/tefas/:kod", async (req, res) => {

@@ -10,7 +10,9 @@ export default {
         shark: '#1E1E20',
         foam: '#CCFDFB',
         tidal: '#E3FCB3',
-        radicalRed: '#FF385C'
+        radicalRed: '#FF385C',
+        gallery: '#EEEEEE',
+        silverChalice: '#ACACAC',
       }
     },
   },
