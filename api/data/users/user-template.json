@@ -10,26 +10,22 @@
     {
       "id": "1",
       "name": "sepet ismi",
+      "createDate": 1706864751612,
+      "updateDate": 1706864751612,
+      "status": true,
       "funds": [
         {
           "id": "1",
-          "kod": "DVT",
-          "ekleme-tarihi": 1706864751612,
-          "miktar": 1000
+          "kod": "IPB",
+          "name": "İSTANBUL PORTFÖY BİRİNCİ DEĞİŞKEN FON",
+          "price": "0.3946",
+          "startDate": 1706745600000,
+          "amount": "1000",
+          "total": 394.6,
+          "createDate": 1708543241568,
+          "status": true
         }
       ]
     },
-    {
-      "id": "2",
-      "name": "sepet ismi-2",
-      "funds": [
-        {
-          "id": "2",
-          "kod": "IPB",
-          "ekleme-tarihi": 1706864751612,
-          "miktar": 1000
-        }
-      ]
-    }
   ]
 }

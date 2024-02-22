@@ -108,8 +108,43 @@ app.post("/add-portfolio", async (req, res) => {
   return res.status(200).json(userData);
 })
 
+// PORTFOLIO FUNDS
+app.get('/fund-list/:userID/:portfolioID', async(req, res) => {
+	const { userID, portfolioID } = req.params;
+  const userFile = findUserFile(userID)
+
+  if (!userFile) return res.status(422).json('Something got wrong!');
+
+  const userJason = fs.readFileSync(`${usersPath}/${userFile}`, 'utf-8');
+  const userData = JSON.parse(userJason)
+  const userPortfolio = userData.portfolios.find(portfolio => portfolio?.id == portfolioID)
+
+  return res.status(200).json(userPortfolio);
+})
+
+// UPDATE PORTFOLIO
+app.post("/add-fund", async (req, res) => {
+  const {userID, portfolioID, newFund} = req.body;
+  const userFile = findUserFile(userID)
+  
+  if (!userFile) return res.status(422).json('Something got wrong!');
+
+  const userJason = fs.readFileSync(`${usersPath}/${userFile}`, 'utf-8');
+  const userData = JSON.parse(userJason)
+
+  const portfolioIndex = userData.portfolios.findIndex(portfolio => portfolio.id == portfolioID);
+  const userPortfolio = userData.portfolios[portfolioIndex]
+  
+  userPortfolio.funds.push(newFund)
+  
+  const json = JSON.stringify(userData, null, 2);
+  fs.writeFileSync(`${usersPath}/${userFile}`, json)
+
+  return res.status(200).json(userPortfolio);
+})
+
 // FUND LIST
-app.get('/fund-list', async(req, res) => {
+app.get('/all-funds', async(req, res) => {
   const fundsJson = fs.readFileSync(`${fundsPath}/funds.json`, 'utf-8');
   const fundsData = JSON.parse(fundsJson)
   return res.status(200).json(fundsData);

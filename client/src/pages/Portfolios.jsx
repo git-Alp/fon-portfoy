@@ -9,7 +9,7 @@ export default function Portfolios() {
   const [userInfo, setUserInfo] = useState('')
   const [portfolioName, setPortfolioName] = useState('')
 
-  const userID = "9d49305f-d848-4b69-ab55-f309f08cead3"
+  const userID = "2a4eebd2-caaa-4601-93b6-dcea743a851c"
 
   useEffect(() => {
     axios.get(`/portfolio-list/${userID}`)
@@ -60,7 +60,7 @@ export default function Portfolios() {
           <button>test</button>
         </form>
       }
-      <div className="flex flex-col my-2 w-full max-w-5xl">
+      <div className="flex flex-col my-2 w-full max-w-xl">
         {userInfo &&
           userInfo.portfolios.map(portfolio => {
             return (
