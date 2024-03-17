@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
+
+import Form from "./Portfolios/Form";
+import PortfolioList from "./Portfolios/PortfolioList";
 
 export default function Portfolios() {
 
@@ -9,10 +11,10 @@ export default function Portfolios() {
   const [userInfo, setUserInfo] = useState('')
   const [portfolioName, setPortfolioName] = useState('')
 
-  const userID = "2a4eebd2-caaa-4601-93b6-dcea743a851c"
+  const userID = "2ba0b51d-6bbd-4f8a-8299-2ad3a4cc7cfd"
 
   useEffect(() => {
-    axios.get(`/portfolio-list/${userID}`)
+    axios.get(`/portfolios/portfolio-list/${userID}`)
       .then((res) => setUserInfo(res.data));
   }, []);
 
@@ -21,11 +23,13 @@ export default function Portfolios() {
       userID,
       newPortfolio: portfolio
     }
-    const response = await axios.post('/add-portfolio', form);
+    const response = await axios.post('/portfolios/add-portfolio', form);
     setUserInfo(response.data)
   }
 
-  const showForm = () => setIsShow(!isShow)
+  const showForm = (value) => setIsShow(value)
+
+  const handlePortfolioName = (event) => setPortfolioName(event.target.value)
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -49,32 +53,13 @@ export default function Portfolios() {
   return (
     <div className="mt-8 flex flex-col items-center justify-start grow min-h-[50vh]">
       <h1>Portfolios Page</h1>
-      <div className="cursor-pointer" onClick={showForm}>Yeni Portföy oluşturmak için tıklayın</div>
-      {isShow &&
-        <form className="w-full max-w-xl mx-auto" onSubmit={submitForm}>
-          <input
-            type="text"
-            placeholder="Portföy ismini yazın"
-            onChange={e => setPortfolioName(e.target.value)}
-          />
-          <button>test</button>
-        </form>
-      }
-      <div className="flex flex-col my-2 w-full max-w-xl">
-        {userInfo &&
-          userInfo.portfolios.map(portfolio => {
-            return (
-              <Link
-                className="p-2 my-2 cursor-pointer bg-gallery shadow-lg rounded-xl hover:bg-silverChalice"
-                key={portfolio.id}
-                to={`/portfolio/${portfolio.id}`}
-              >
-                {portfolio.name}
-              </Link>
-            )
-          })
-        }
-      </div>
+      <Form 
+        isShow = {isShow}
+        showForm = {showForm}
+        submitForm = {submitForm}
+        handlePortfolioName = {handlePortfolioName}
+      />
+      <PortfolioList userInfo = {userInfo} />
     </div>
   );
 }
